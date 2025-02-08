@@ -9,20 +9,17 @@ interface ChatMessage {
 }
 
 export default function PDFChatbot() {
-  const [file, setFile] = useState<File | null>(null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const chatInputRef = useRef<HTMLInputElement>(null)
 
-  // Render API endpoint (replace with your actual Render URL)
   const API_BASE_URL = 'https://chatbot-4dq9.onrender.com'
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
-      setFile(selectedFile)
       setIsUploading(true)
 
       const formData = new FormData()
@@ -37,7 +34,7 @@ export default function PDFChatbot() {
           ...messages, 
           { type: 'bot', text: `PDF "${selectedFile.name}" uploaded successfully!` }
         ])
-      } catch (error) {
+      } catch {
         setMessages([
           ...messages, 
           { type: 'bot', text: 'Error uploading PDF. Please try again.' }
@@ -67,7 +64,7 @@ export default function PDFChatbot() {
         ...prev, 
         { type: 'bot', text: response.data.response }
       ])
-    } catch (error) {
+    } catch {
       setMessages(prev => [
         ...prev, 
         { type: 'bot', text: 'Sorry, something went wrong. Please try again.' }
